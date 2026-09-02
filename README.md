@@ -174,11 +174,13 @@ customer-churn-prediction/
 Clone the repository:
 
 git clone https://github.com/Vercetius/customer-churn-prediction.git
+
 cd customer-churn-prediction
 
 Create a virtual environment:
 
 python3 -m venv .venv
+
 source .venv/bin/activate
 
 Install dependencies:
