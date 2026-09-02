@@ -8,7 +8,7 @@ The project covers the complete ML workflow: exploratory data analysis, preproce
 
 Try the application here:
 
-https://customer-churn-prediction-ta-facil-joao.streamlit.app/
+https://customer-churn-ml999.streamlit.app/
 
 The application allows users to enter customer information and receive:
 
