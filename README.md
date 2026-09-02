@@ -33,8 +33,6 @@ Customer churn occurs when customers stop using a company's services.
 
 The objective of this project is to identify customers with a higher probability of churn so that a company can prioritize retention actions before those customers leave.
 
-Rather than relying only on overall accuracy, the project focuses particularly on detecting customers who are genuinely at risk of churn.
-
 ## Dataset
 
 The project uses the IBM Telco Customer Churn dataset.
@@ -44,21 +42,7 @@ The project uses the IBM Telco Customer Churn dataset.
 - Target variable: `Churn`
 - Overall churn rate: approximately 26.5%
 
-The dataset includes information such as:
-
-- Contract type
-- Customer tenure
-- Monthly charges
-- Total charges
-- Internet service
-- Payment method
-- Technical support
-- Online security
-- Streaming services
-
 ## Exploratory Data Analysis
-
-Several clear patterns were found before training the models.
 
 ### Contract Type
 
@@ -68,17 +52,13 @@ Churn rate by contract:
 - One year: 11.3%
 - Two year: 2.8%
 
-Customers with long-term contracts showed substantially lower churn.
-
 ### Internet Service
 
-Churn rate by internet service:
+Churn rate:
 
 - Fiber optic: 41.9%
 - DSL: 19.0%
 - No internet: 7.4%
-
-Fiber optic customers showed a considerably higher churn rate in this dataset.
 
 ### Customer Tenure
 
@@ -87,8 +67,6 @@ Average tenure:
 - Customers who stayed: 37.6 months
 - Customers who churned: 18.0 months
 
-Customers with shorter tenure were substantially more likely to churn.
-
 ### Monthly Charges
 
 Average monthly charges:
@@ -96,62 +74,41 @@ Average monthly charges:
 - Customers who stayed: 61.27
 - Customers who churned: 74.44
 
-Customers who churned also tended to have higher monthly charges.
-
 ## Data Preparation
 
 The preprocessing workflow includes:
 
-- Converting `TotalCharges` to a numerical variable
-- Investigating and handling missing values
-- Removing `customerID` from the model features
-- Separating features and target
+- Converting `TotalCharges` to numeric
+- Handling missing values
+- Removing `customerID`
 - Stratified train/test split
 - One-hot encoding categorical features
 - Standardizing numerical features
 
-The preprocessing and Logistic Regression model are combined into a Scikit-learn `Pipeline`.
-
-This makes the model reusable because new customer data can be passed directly into the pipeline without manually repeating the preprocessing steps.
+The preprocessing and Logistic Regression model are combined in a Scikit-learn `Pipeline`.
 
 ## Models Tested
 
 ### Logistic Regression
 
-Test ROC-AUC:
-
-`0.842`
-
-5-fold cross-validation ROC-AUC:
-
-`0.845 ± 0.011`
+- Test ROC-AUC: `0.842`
+- 5-fold cross-validation ROC-AUC: `0.845 ± 0.011`
 
 ### Random Forest
 
-Test ROC-AUC:
+- Test ROC-AUC: `0.827`
 
-`0.827`
-
-Logistic Regression provided the strongest overall discrimination and was selected as the final model.
+Logistic Regression was selected as the final model.
 
 ## Threshold Optimization
 
-Using the default classification threshold of `0.50` resulted in relatively low recall for churn customers.
-
-Several thresholds were evaluated to study the trade-off between precision and recall.
-
-A threshold of:
-
-`0.39`
-
-was selected as a practical balance between identifying churn customers and limiting false alarms.
+A decision threshold of `0.39` was selected.
 
 At this threshold:
 
-- Precision: approximately 57%
-- Recall: approximately 68%
-- F1-score: approximately 62%
-- ROC-AUC: approximately 0.842
+- Precision: ~57%
+- Recall: ~68%
+- F1-score: ~62%
 
 Confusion matrix:
 
@@ -160,41 +117,35 @@ Confusion matrix:
 - False negatives: 120
 - True positives: 254
 
-This means the model detects approximately 68% of customers who actually churn.
-
 ## Model Interpretation
 
-The Logistic Regression coefficients were also examined to understand which features influenced the model.
-
-Some of the strongest features associated with higher churn predictions were:
+Features associated with higher churn predictions included:
 
 - Fiber optic internet
 - Electronic check payment
 - Paperless billing
 - Multiple lines
 
-Some of the strongest features associated with lower churn predictions were:
+Features associated with lower churn predictions included:
 
 - Two-year contracts
 - One-year contracts
 - Online security
 - Technical support
 
-These relationships should be interpreted as associations within the dataset rather than proof of causation.
+These are associations in the dataset and should not be interpreted as proof of causation.
 
 ## Streamlit Application
 
-The trained Scikit-learn pipeline is saved using `joblib` and loaded by the Streamlit application.
+The trained model is integrated into a Streamlit application.
 
-The application allows a user to enter the characteristics of a new customer and receive a real-time prediction.
+Users can enter customer characteristics and receive a real-time churn probability and risk classification.
 
-Example output:
+Example:
 
 `Churn probability: 76.6%`
 
 `High churn risk`
-
-Customers whose predicted probability exceeds the selected threshold are flagged as candidates for retention action.
 
 ## Project Structure
 
@@ -216,3 +167,45 @@ customer-churn-prediction/
 ├── .gitignore
 ├── README.md
 └── requirements.txt
+```
+
+## Run Locally
+
+Clone the repository:
+
+git clone https://github.com/Vercetius/customer-churn-prediction.git
+cd customer-churn-prediction
+
+Create a virtual environment:
+
+python3 -m venv .venv
+source .venv/bin/activate
+
+Install dependencies:
+
+python -m pip install -r requirements.txt
+
+Run the app:
+
+python -m streamlit run app/app.py
+
+## Technologies
+
+- Python
+- pandas
+- NumPy
+- Scikit-learn
+- Streamlit
+- Jupyter Notebook
+- Matplotlib
+- Git
+- GitHub
+
+## Future Improvements
+
+- Hyperparameter optimization
+- XGBoost or LightGBM comparison
+- SHAP explainability
+- Cost-sensitive threshold optimization
+- Automated tests
+- Model monitoring
