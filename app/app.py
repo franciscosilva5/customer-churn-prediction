@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import streamlit as st
 import pandas as pd
 import joblib
@@ -9,9 +11,10 @@ st.set_page_config(
     layout="wide"
 )
 
-# Carregar modelo
-modelo = joblib.load("churn_model.joblib")
-threshold = joblib.load("churn_threshold.joblib")
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+modelo = joblib.load(BASE_DIR / "models" / "churn_model.joblib")
+threshold = joblib.load(BASE_DIR / "models" / "churn_threshold.joblib")
 
 # Cabeçalho
 st.title("Customer Churn Prediction")
