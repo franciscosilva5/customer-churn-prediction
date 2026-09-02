@@ -156,18 +156,23 @@ Example:
 ## Project Structure
 
 ```text
-customer-churn/
-├── app.py
-├── churn_model.joblib
-├── churn_threshold.joblib
-├── exploration.ipynb
-├── requirements.txt
-├── README.md
+customer-churn-prediction/
+├── app/
+│   └── app.py
+├── data/
+│   └── raw/
+│       └── customer_churn.csv
 ├── images/
-│   └── app-screenshot.png
-└── data/
-    └── raw/
-        └── customer_churn.csv
+│   ├── App Perguntas.png
+│   └── App Resultado.png
+├── models/
+│   ├── churn_model.joblib
+│   └── churn_threshold.joblib
+├── notebooks/
+│   └── exploration.ipynb
+├── .gitignore
+├── README.md
+└── requirements.txt
 ```
 
 ## Run Locally
