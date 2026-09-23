@@ -135,6 +135,37 @@ Features associated with lower churn predictions included:
 
 These are associations in the dataset and should not be interpreted as proof of causation.
 
+## Design Decisions and Trade-offs
+
+The final model favors interpretability and ranking quality rather than model complexity.
+
+**Logistic Regression was selected over Random Forest** because it achieved the stronger ROC-AUC in this project while remaining easier to interpret.
+
+**The prediction threshold is optimized separately from the model.** A threshold below 0.50 increases recall for churn cases, allowing more potentially at-risk customers to be identified. The trade-off is an increase in false positives.
+
+**ROC-AUC is used alongside classification metrics** because churn prediction is fundamentally a ranking problem before a business decision threshold is applied.
+
+**Cross-validation is used to check stability.** The five-fold ROC-AUC result is close to the held-out test result, reducing reliance on a single train/test split.
+
+**Model coefficients are interpreted as associations rather than causal effects.** Features associated with churn may be useful for prediction without being the direct cause of customer behavior.
+
+## Automated Tests
+
+The project includes automated tests covering:
+
+- model artifact loading
+- prediction threshold loading
+- expected input schema
+- missing-feature validation
+- prediction probability range
+- churn-risk decision output
+
+Run:
+
+pytest -q
+
+GitHub Actions automatically runs the test suite on pushes and pull requests to main.
+
 ## Streamlit Application
 
 The trained model is integrated into a Streamlit application.
@@ -203,11 +234,26 @@ python -m streamlit run app/app.py
 - Git
 - GitHub
 
+## Limitations
+
+This is a portfolio machine-learning project rather than a production churn-management system.
+
+Important limitations include:
+
+- the dataset represents a specific telecom churn dataset and may not generalize to other businesses
+- customer behavior may change over time
+- the selected threshold reflects the project objective rather than a measured business cost function
+- probability estimates are model outputs, not guarantees that a customer will churn
+- feature associations should not be interpreted as causal relationships
+- no temporal validation or production drift monitoring is included
+- no real retention-cost or customer-lifetime-value optimization is implemented
+
+A production system would require current company data, temporal validation, probability calibration, business-cost modeling, drift monitoring and integration with customer-retention workflows.
+
 ## Future Improvements
 
 - Hyperparameter optimization
 - XGBoost or LightGBM comparison
 - SHAP explainability
 - Cost-sensitive threshold optimization
-- Automated tests
 - Model monitoring
