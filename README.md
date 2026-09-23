@@ -173,7 +173,7 @@ customer-churn-prediction/
 
 Clone the repository:
 
-git clone https://github.com/Vercetius/customer-churn-prediction.git
+git clone https://github.com/franciscosilva5/customer-churn-prediction.git
 
 cd customer-churn-prediction
 
